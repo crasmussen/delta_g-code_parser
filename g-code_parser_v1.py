@@ -119,18 +119,26 @@ for line in f:
 			
 print "Number of layers: " + str(len(layers))
 
-vertices = np.array(layers[50][0], float)
-path = Path(vertices, layers[50][1])
+response = None
+while 1:
 
-pathpatch = PathPatch(path, facecolor='None', edgecolor='green')
-
-fig = plt.figure()
-ax = fig.add_subplot(111, aspect='equal')
-ax.add_patch(pathpatch)
-ax.set_title('A compound path')
-
-ax.dataLim.update_from_data_xy(layer_vertices)
-ax.autoscale_view()
-
-
-plt.show()
+	response = input("Which layer would you like to see? ")
+	
+	view_layer = response
+	
+	vertices = np.array(layers[view_layer][0], float)
+	path = Path(vertices, layers[view_layer][1])
+	
+	pathpatch = PathPatch(path, facecolor='None', edgecolor='green')
+	
+	fig = plt.figure()
+	ax = fig.add_subplot(111, aspect='equal')
+	ax.add_patch(pathpatch)
+	ax.set_title('Tool Path')
+	
+	ax.dataLim.update_from_data_xy(layers[view_layer][0])
+	ax.autoscale_view()
+	fig.savefig('file.png')
+	
+	
+	plt.show()
