@@ -1,7 +1,10 @@
 layer_vertices = []
 layer_codes = []
-machine_x, machine_y, machine_z, machine_e, machine_f, layer = 0, 0, 0, 0, 0, 0
+layers = []
+
+machine_x, machine_y, machine_z, machine_e, machine_f, machine_layer = 0, 0, 0, 0, 0, 0
 machine_home_x, machine_home_y, machine_home_z = 0,0,0
+
 import numpy as np
 from matplotlib.path import Path
 from matplotlib.patches import PathPatch
@@ -16,9 +19,10 @@ def strip_axis(line):
 	return string.rstrip()
 
 def machine_update(x, y, z, e, f):
-	global machine_x, machine_y, machine_z, machine_e, machine_f, layer
+	global machine_x, machine_y, machine_z, machine_e, machine_f, machine_layer
 	global layer_vertices
 	global layer_codes
+	global layers
 	machine_x = x
 	machine_y = y
 	machine_e = e
@@ -26,10 +30,11 @@ def machine_update(x, y, z, e, f):
 	
 	if z > 0:
 		# next build layer
+		layers.append((layer_vertices, layer_codes))
 		layer_vertices = []
 		layer_codes = []
 		machine_z = z
-		layer += 1
+		machine_layer += 1
 	print machine_z
 	
 def plot_add_vertex():
@@ -114,13 +119,13 @@ for line in f:
 			
 print len(layer_vertices)
 
-layer_vertices = np.array(layer_vertices, float)
-path = Path(layer_vertices, layer_codes)
+vertices = np.array(layer_vertices, float)
+path = Path(vertices, layer_codes)
 
 pathpatch = PathPatch(path, facecolor='None', edgecolor='green')
 
 fig = plt.figure()
-ax = fig.add_subplot(111)
+ax = fig.add_subplot(111, aspect='equal')
 ax.add_patch(pathpatch)
 ax.set_title('A compound path')
 
