@@ -50,7 +50,7 @@ def plot_add_vertex():
 			layer_codes.append(Path.MOVETO)	
 
 
-f = open ('Nautilus_Gear.gcode', 'r')
+f = open ('Clamp.gcode', 'r')
 
 
 #Machine state settings
@@ -117,10 +117,10 @@ for line in f:
 		if m:
 			e = strip_axis(m.group(0))
 			
-print len(layer_vertices)
+print "Number of layers: " + str(len(layers))
 
-vertices = np.array(layer_vertices, float)
-path = Path(vertices, layer_codes)
+vertices = np.array(layers[50][0], float)
+path = Path(vertices, layers[50][1])
 
 pathpatch = PathPatch(path, facecolor='None', edgecolor='green')
 
